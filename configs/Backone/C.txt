@@ -1,0 +1,31 @@
+enable
+config terminal
+hostname C
+!
+interface GigabitEthernet0/0
+ ip address 10.23.1.2 255.255.255.252
+ no shutdown
+!
+interface GigabitEthernet0/1
+ ip address 10.42.52.2 255.255.255.252
+ no shutdown
+!
+interface GigabitEthernet0/2
+ ip address 172.62.72.2 255.255.255.252
+ no shutdown
+!
+interface GigabitEthernet0/3
+ ip address 10.42.52.1 255.255.255.252
+ no shutdown
+!
+!
+router ospf 1
+ router-id 4.4.4.4
+ log-adjacency-changes
+ network 10.23.1.0 0.0.0.3 area 0
+ network 10.42.52.0 0.0.0.3 area 0
+ network 172.62.72.0 0.0.0.3 area 0
+ end
+!
+wr
+!

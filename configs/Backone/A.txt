@@ -1,0 +1,31 @@
+enable
+config terminal
+hostname A
+!
+interface GigabitEthernet0/1
+ ip address 10.23.1.5 255.255.255.252
+ no shutdown
+!
+interface GigabitEthernet0/2
+ ip address 172.32.62.2 255.255.255.252
+ no shutdown
+!
+interface GigabitEthernet0/0
+ ip address 10.42.52.5 255.255.255.252
+ no shutdown
+!
+router ospf 2
+ router-id 2.2.1.1
+ redistribute ospf 1 subnets
+ network 172.32.62.0 0.0.0.3 area 1
+ default-information originate
+!
+router ospf 1
+ router-id 2.2.2.2
+ redistribute ospf 2 subnets
+ network 10.23.1.4 0.0.0.3 area 0
+ network 10.42.52.4 0.0.0.3 area 0
+ end
+!
+exit
+!

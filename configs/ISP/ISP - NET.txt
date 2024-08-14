@@ -1,0 +1,27 @@
+enable
+configure terminal
+!
+hostname ISP-NET
+!
+interface GigabitEthernet0/0
+ ip address 172.12.72.1 255.255.255.252
+ no shutdown
+!
+interface GigabitEthernet0/1
+ ip address 172.22.32.1 255.255.255.252
+ no shutdown
+!
+router ospf 3
+ router-id 2.2.2.2
+redistribute ospf 2 subnets
+ network 172.22.32.0 0.0.0.3 area 2
+ default-information originate
+!
+router ospf 2
+ router-id 1.1.2.1
+ redistribute ospf 3 subnets
+ network 172.12.72.0 0.0.0.3 area 1
+ end
+!
+wr
+!

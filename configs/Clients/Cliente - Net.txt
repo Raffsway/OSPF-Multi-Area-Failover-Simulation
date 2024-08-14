@@ -1,0 +1,35 @@
+enable
+configure terminal
+!
+hostname Cliente-NET
+!
+ip dhcp pool REDE.NET
+ network 192.168.1.0 255.255.255.0
+ default-router 192.168.1.1
+ dns-server 8.8.8.8 8.8.4.4
+ lease 0 12 30
+ exit
+ip dhcp excluded-address 192.168.1.1 192.168.1.9
+!
+interface GigabitEthernet0/0
+ ip address 172.22.32.2 255.255.255.252
+ ip nat outside
+ no shutdown
+!
+interface GigabitEthernet0/1
+ ip address 192.168.1.1 255.255.255.0
+ ip nat inside
+ no shutdown
+!
+router ospf 3
+ router-id 2.2.2.3
+ passive-interface GigabitEthernet0/1
+ network 172.22.32.0 0.0.0.3 area 2
+!
+ip nat inside source list NAT interface GigabitEthernet0/0 overload
+!
+ip access-list standard NAT
+ permit 192.168.1.0 0.0.0.255
+end
+!
+wr
